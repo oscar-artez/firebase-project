@@ -1,8 +1,5 @@
-import React from 'react';
-import { Dialog, DialogTitle, DialogContent, Button, Grid, IconButton, Typography, TextField, Box } from '@mui/material';
-import { styled } from '@mui/system';
+import { Dialog, DialogContent,Typography} from '@mui/material';
 import SocialLoginButtons from './SocialLogos';
-import { Form } from 'react-hook-form';
 import LoginForm from './LoginForm';
 
 type Props = {

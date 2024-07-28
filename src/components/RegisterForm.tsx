@@ -1,5 +1,3 @@
-// src/components/RegisterForm.tsx
-import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Typography, Box } from '@mui/material';
 
@@ -8,7 +6,7 @@ interface FormValues {
   password: string;
 }
 
-const RegisterForm: React.FC = () => {
+export default function RegisterForm(){
   const { control, handleSubmit, formState: { errors } } = useForm<FormValues>({
     defaultValues: {
       email: '',
@@ -18,7 +16,6 @@ const RegisterForm: React.FC = () => {
 
   const onSubmit = (data: FormValues) => {
     console.log('Formulario enviado:', data);
-    // Aquí puedes agregar la lógica para enviar los datos al servidor
   };
 
   return (
@@ -81,4 +78,3 @@ const RegisterForm: React.FC = () => {
   );
 };
 
-export default RegisterForm;
