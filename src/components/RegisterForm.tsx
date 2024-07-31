@@ -1,6 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Typography, Box } from '@mui/material';
-
+import {auth} from '../app/firebase/client'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 interface FormValues {
   email: string;
   password: string;
@@ -14,14 +15,21 @@ export default function RegisterForm(){
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('Formulario enviado:', data);
+  const onSubmit = async (data: FormValues) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      console.log('Usuario registrado:', userCredential.user);
+    // TODO: Necesito implementar la redirección del usuario al inicio  de sesión o a la plataforma.
+  } catch (error) {
+      console.error('Error al registrar usuario:', error);
+    }
   };
+
 
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit)} // Maneja el envío del formulario
     >
       <Typography variant="h6" gutterBottom>
         Registro de Usuario
@@ -71,7 +79,7 @@ export default function RegisterForm(){
           />
         )}
       />
-      <Button type="submit" variant="contained" color="primary" fullWidth>
+      <Button type="submit" variant="contained" color="primary" fullWidth >
         Registrarse
       </Button>
     </Box>

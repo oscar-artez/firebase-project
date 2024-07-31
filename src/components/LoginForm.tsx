@@ -1,6 +1,8 @@
 import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, Typography, Box } from '@mui/material';
-
+import { TextField, Button, Typography, Box, Alert } from '@mui/material';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 interface FormValues {
   email: string;
   password: string;
@@ -14,11 +16,26 @@ interface FormValues {
     },
   });
 
+  const auth = getAuth();
+  const router = useRouter();
+  const [isError, setIsError] = useState(false)
+  
   const onSubmit = (data: FormValues) => {
+    signInWithEmailAndPassword(auth, data.email, data.password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      router.push('/Profile')
+    })
+    .catch((error) => {
+      setIsError(true)
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
     console.log('Formulario enviado:', data);
   };
 
   return (
+    <>
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
@@ -75,6 +92,10 @@ interface FormValues {
         Iniciar sesión
       </Button>
     </Box>
+    {isError &&
+    <Alert severity="error">Tus credenciales son incorrectas. Intentalo de nuevo</Alert>
+    }
+    </>
   );
 };
 
